@@ -21,10 +21,10 @@
             </div>
             <div class="col-6" style="border: 1px solid black;">
 
-                <form method="POST">
+                <form method="POST" action="{{url_for("form_post")}}" >
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Enter name</label>
-                        <input type="text" class="form-control" name="entered_name" id="exampleFormControlInput1" placeholder="Enter your name">
+                        <input type="text" class="form-control" name="name_entered" id="exampleFormControlInput1" placeholder="Enter your name">
                       </div>
                       <button type="submit" class="btn btn-outline-primary" name="/Go">Submit</button>
 
