@@ -10,11 +10,6 @@
 <script>
 export default{
     name:'UserHome',
-    data(){
-        return{
-            x: "shubham"
-        }
-    }
 }
 </script>
 
