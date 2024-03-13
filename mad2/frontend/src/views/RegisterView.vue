@@ -3,7 +3,10 @@
         <b-container class="bv-example-row">
             <b-row>
                 <b-col>1 of 3</b-col>
-                <b-col><b-form>
+                <b-col>
+                    <h1>register Page</h1>
+
+                    <b-form>
                         <b-form-group id="input-group-1" label="Email address:" label-for="input-1"
                             description="We'll never share your email with anyone else.">
                             <b-form-input id="input-1" v-model="form.email" type="text" placeholder="Enter email"
@@ -78,6 +81,7 @@ export default {
             .then((response) => {
                 if (response.data.status == "success"){
                     alert(response.data.message)
+                    this.$router.push('/login')
                 }
                 if (response.data.status == "failed"){
                     alert(response.data.message)
