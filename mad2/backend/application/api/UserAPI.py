@@ -1,5 +1,6 @@
 from flask import request, jsonify
 from flask_restful import Resource, reqparse, abort, fields, marshal_with
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
 from application.data.model import db, User
@@ -20,6 +21,7 @@ resource_fields ={
 }
 
 class UserAPI(Resource):
+    @jwt_required()
     @marshal_with(resource_fields)
     def get(self, user_id):
         user = User.query.filter_by(user_id = user_id).first()
@@ -27,6 +29,7 @@ class UserAPI(Resource):
             abort(404, messasge= "no user exist with this user_id")
         return user
 
+    @jwt_required()
     def delete(self,user_id):
         user = User.query.filter_by(user_id = user_id).first()
         if not user:
@@ -35,6 +38,7 @@ class UserAPI(Resource):
         db.session.commit()
         return jsonify({'status': "success", 'message': 'user is deleted'})
 
+    @jwt_required()
     @marshal_with(resource_fields)
     def put(self,user_id):
         args = user_put_args.parse_args()
@@ -51,6 +55,7 @@ class UserAPI(Resource):
 
 
 class AllUserAPI(Resource):
+    @jwt_required()
     def get(resource):
         users = User.query.all()
         all_user = []
@@ -60,6 +65,7 @@ class AllUserAPI(Resource):
                              'password': user.password})
         return all_user
 
+    @jwt_required()
     def post(resource):
         args = user_post_args.parse_args()
         user = User.query.filter_by(user_mail = args["user_mail"]).first()

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <Header></Header>
         <b-container class="bv-example-row">
             <b-row>
                 <b-col>1 of 3</b-col>
@@ -38,9 +39,13 @@
 <script>
 
 import axios from 'axios';
+import Header from '@/components/Header.vue';
 
 export default {
     name: 'RegisterUserView',
+    components: {
+        Header
+    },
     data() {
         return {
             form: {
