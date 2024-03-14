@@ -39,19 +39,19 @@
 
             </div>
             <div class="col-6" style="border: 1px solid black;">
-                <h1>Add new Show </h1>
-                <form method="post" enctype="multipart/form-data" >
+                <h1>{{page_name}}</h1>
+                <form enctype="multipart/form-data" method="post" >
                 <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Show name</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" name="name" placeholder="name@example.com">
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="name" placeholder="name@example.com" value="{{show.show_name}}">
                   </div>
                   <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Language</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" name="lang" placeholder="name@example.com">
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="lang" placeholder="name@example.com" value="{{show.language}}">
                   </div>
                   <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Duration</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" name="duration" placeholder="name@example.com">
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="duration" placeholder="name@example.com" value="{{show.duration}}">
                   </div>
                   <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Poster</label>

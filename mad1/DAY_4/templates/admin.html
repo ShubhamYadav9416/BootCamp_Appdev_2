@@ -68,7 +68,7 @@
                         <td>{{ show.language }}</td>
                         <td>{{ show.duration }}</td>
                         <td><a href="../{{show.poster_img_path}}" target="_blank">view</a></td>
-                        <td><a href="{{url_for("dlt_show", show_id = show.show_id)}}"><i class="bi bi-trash-fill"></i></a></td>
+                        <td><a href="{{url_for("dlt_show", show_id = show.show_id)}}"><i class="bi bi-trash-fill"></i></a>/<a href="{{url_for("edit_show", show_id = show.show_id)}}"><i class="bi bi-pencil-square"></i></a></td>
                     </tr>
                     {% endfor %}
                 </table>
