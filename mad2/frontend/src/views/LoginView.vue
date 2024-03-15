@@ -88,14 +88,20 @@ export default {
                     const access_token = response.data.access_token;
                     const refresh_token = response.data.refresh_token;
                     const user_mail = response.data.user_mail
+                    const user_id = response.data.user_id
 
                     localStorage.setItem("access_token", access_token)
                     localStorage.setItem("refresh_token", refresh_token)
                     localStorage.setItem("user_mail",user_mail)
+                    localStorage.setItem("user_id", user_id)
 
+                    // if  (response.data.admin == true){
+                    //     this.$router.push("/admin")
+                    // }
+                    // else if ()
+                    // // console.log(response.data)
+                        this.$router.push("/")
 
-                    // console.log(response.data)
-                    this.$router.push("/")
                     return;
                 }
                 if (response.data.status == "failed"){

@@ -5,12 +5,13 @@
         <router-link to="/register">Register</router-link><br>
         <router-link to="/login">Login</router-link>
         <button @click="logoutUser()">LogOut</button>
-    <div v-for="user in all_users_data" :key="user.user_id" v-show="all_users_data">
+    <!-- <div v-for="user in all_users_data" :key="user.user_id" v-show="all_users_data">
         {{ user.user_mail }}
-    </div>
+    </div> -->
     <div v-if="x == true">
         {{all_users_data}}
     </div>
+    {{all_users_data}}
     <FlashMessage :position="'right bottom'"></FlashMessage>
 
 
@@ -29,7 +30,7 @@ export default{
     data(){
         return{
             all_users_data : {},
-            x: false
+            x: true
         }
     },
     methods:{
@@ -44,14 +45,14 @@ export default{
         async getAllUserData(){
             try{
                 let access_token = localStorage.getItem('access_token')
+                let user_id = localStorage.getItem('user_id')
 
                 axios.defaults.headers.common['Authorization'] ='Bearer ' + access_token
-                const dataResponse =  await axios.get(`http://127.0.0.1:8081/api/user`)
+                const dataResponse =  await axios.get(`http://127.0.0.1:8081/api/user/${user_id}`)
 
-                console.log(dataResponse)
+                console.log(dataResponse.data)
 
                 this.all_users_data = dataResponse.data
-                this.x = false
 
                 this.flashMessage.success({
                     message: "user data retrieved"
