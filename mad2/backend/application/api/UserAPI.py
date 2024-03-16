@@ -1,9 +1,10 @@
 from flask import request, jsonify
 from flask_restful import Resource, reqparse, abort, fields, marshal_with
 from flask_jwt_extended import jwt_required, get_jwt_identity
-
+from time import perf_counter_ns
 
 from application.data.model import db, User
+from application.data.data_access import get_all_users
 
 user_post_args = reqparse.RequestParser()
 user_post_args.add_argument('user_mail', type=str, required = True, help="user mail is required")
@@ -57,13 +58,20 @@ class UserAPI(Resource):
 class AllUserAPI(Resource):
     @jwt_required()
     def get(resource):
-        users = User.query.all()
-        all_user = []
-        for user in users:
-            all_user.append({'user_id': user.user_id,
-                             'user_mail': user.user_mail,
-                             'password': user.password})
+        start = perf_counter_ns()
+        all_user = get_all_users()
+        stop = perf_counter_ns()
+        print(stop-start)
         return all_user
+
+
+        # users = User.query.all()
+        # all_user = []
+        # for user in users:
+        #     all_user.append({'user_id': user.user_id,
+        #                      'user_mail': user.user_mail,
+        #                      'password': user.password})
+        # return all_user
 
     @jwt_required()
     def post(resource):

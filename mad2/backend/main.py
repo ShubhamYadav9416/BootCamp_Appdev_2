@@ -4,10 +4,12 @@ from flask_restful import Api
 import application.config as config
 from application.data.database import db
 from application.data.model import *
+from application.cache import cache
 
 from application.security import user_datastore, security
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
+
 
 from application.api.UserAPI import AllUserAPI, UserAPI
 from application.api.auth.registerAPI import RegisterAPI
@@ -47,6 +49,8 @@ JWTManager(app)
 
 security.init_app(app, user_datastore)
 
+cache.init_app(app)
+
 api.add_resource(AllUserAPI, "/api/user")
 api.add_resource(UserAPI, "/api/user/<int:user_id>")
 api.add_resource(RegisterAPI, '/api/user/register')
@@ -66,6 +70,8 @@ def create_roles_init():
         db.session.add(new_role)
         db.session.commit()
     
+
+
 
 with app.app_context():
     db.create_all()

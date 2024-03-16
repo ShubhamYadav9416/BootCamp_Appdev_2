@@ -2,7 +2,8 @@
 <div>
 <Header
 :loginpage="true"
-:email="heygmail_com">
+:email="heygmail_com"
+>
 
 </Header>
     <b-container class="bv-example-row">

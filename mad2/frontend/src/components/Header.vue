@@ -7,15 +7,14 @@
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav v-show="loginpage">
-        <router-link to="/register"><b-nav-item href="#">Register</b-nav-item></router-link>
+        <router-link to="/register">Register</router-link>
         <b-nav-item href="#">{{email}}</b-nav-item>
       </b-navbar-nav>
       
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
         <b-nav-form>
-          <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-          <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
+          <b-form-input size="sm" class="mr-sm-2" placeholder="Search" v-model="query_in_search" v-on:change="search"></b-form-input>
         </b-nav-form>
 
         <b-nav-item-dropdown text="Lang" right>
@@ -43,8 +42,20 @@ export default {
     name:"UserHeader",
     props:{
         loginpage: Boolean,
-        email:String
+        email:String,
+    },
+    data(){
+      return{
+        query_in_search:""
+      }
+    },
+    methods:{
+      search(){
+        this.query_h = this.query_in_search
+      }
     }
+    
+    
 }
 </script>
 <style>

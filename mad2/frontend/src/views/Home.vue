@@ -1,40 +1,50 @@
 <template>
     <div>
-        <Header></Header>
+        <Header :query="query_in_home"></Header>
         "hey! I am in Home.vue"
-        <router-link to="/register">Register</router-link><br>
-        <router-link to="/login">Login</router-link>
-        <button @click="logoutUser()">LogOut</button>
-    <!-- <div v-for="user in all_users_data" :key="user.user_id" v-show="all_users_data">
+
+        <!-- <div v-for="user in all_users_data" :key="user.user_id" v-show="all_users_data">
         {{ user.user_mail }}
     </div> -->
-    <div v-if="x == true">
-        {{all_users_data}}
+        <input v-model="query_in_home" v-on:input="search_in_home()">
+        <b-container>
+            <b-row>
+                <b-col v-show="all_users_data_searched" v-for="user in all_users_data_searched" :key="user.user_id"
+                    col="12" md="4" style="margin: 10px;">
+                    <b-list-group>
+                        <b-list-group-item>User_id = {{ user.user_id }}</b-list-group-item>
+                        <b-list-group-item>Password = {{ user.password.slice(0, 10) }}</b-list-group-item>
+                        <b-list-group-item>user_email = {{ user.user_mail }}</b-list-group-item>
+                    </b-list-group>
+                </b-col>
+            </b-row>
+        </b-container>
+
+
+
     </div>
-    {{all_users_data}}
-    <FlashMessage :position="'right bottom'"></FlashMessage>
-
-
-</div>
 </template>
 
 <script>
 import axios from 'axios'
 import Header from '@/components/Header.vue'
+import refreshAccessToken from '@/utils/refreshToken'
 
-export default{
-    name:'UserHome',
+export default {
+    name: 'UserHome',
     components: {
         Header
     },
-    data(){
-        return{
-            all_users_data : {},
+    data() {
+        return {
+            all_users_data_searched: [],
+            all_users_data: {},
+            query_in_home: "",
             x: true
         }
     },
-    methods:{
-        logoutUser(){
+    methods: {
+        logoutUser() {
             localStorage.removeItem("access_token")
             localStorage.removeItem("refresh_token")
             localStorage.removeItem("user_mail")
@@ -42,45 +52,66 @@ export default{
             alert("user log out!!!!")
             this.$router.push("/login")
         },
-        async getAllUserData(){
-            try{
+        search_in_home() {
+            let query = this.query_in_home.toLocaleLowerCase()
+            if (!query) {
+                this.all_users_data_searched = this.all_users_data
+            }
+            else if (query) {
+                this.all_users_data_searched = []
+                for (let user of this.all_users_data) {
+                    if (user.user_mail.toLocaleLowerCase().includes(query)) {
+
+                        this.all_users_data_searched.push(user)
+                    }
+
+                    else if (user.password.toLocaleLowerCase().includes(query)) {
+
+                        this.all_users_data_searched.push(user)
+                    }
+                }
+            }
+        },
+        async getAllUserData() {
+            try {
                 let access_token = localStorage.getItem('access_token')
-                let user_id = localStorage.getItem('user_id')
+                // let user_id = localStorage.getItem('user_id')
 
-                axios.defaults.headers.common['Authorization'] ='Bearer ' + access_token
-                const dataResponse =  await axios.get(`http://127.0.0.1:8081/api/user/${user_id}`)
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token
+                const dataResponse = await axios.get(`http://127.0.0.1:8081/api/user`)
 
-                console.log(dataResponse.data)
-
+                this.all_users_data_searched = dataResponse.data
                 this.all_users_data = dataResponse.data
 
                 this.flashMessage.success({
                     message: "user data retrieved"
                 });
-                this.flashMessage.error({
-                    message: "user data retrieved"
-                });
-                this.flashMessage.warning({
-                    message: "user data retrieved"
-                });
-                this.flashMessage.info({
-                    message: "user data retrieved"
-                });
 
 
             }
-            catch(error){
-                console.log(error)
-                alert("error while fetching data")
+            catch (error) {
+                if (error.response && error.response.status == 401) {
+                    await refreshAccessToken();
+                    await this.getAllUserData();
+                    this.flashMessage.success({
+                        message: "new token made"
+                    });
+
+                }
+                else if (error.response) {
+                    this.flashMessage.error({
+                        message: "error error bye bye"
+                    });
+                }
+
             }
         }
     },
-    created(){
+    created() {
         this.getAllUserData()
     }
 
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
